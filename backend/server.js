@@ -24,17 +24,9 @@ app.use(
       policy: "same-origin-allow-popups",
     },
   })
-);const allowedOrigins = [
-  "http://localhost:5173",
-  "https://reportanalyzefrontend.vercel.app",
-  "https://reportanalyzefrontend-ribxb53aw-pratik-panjaris-projects.vercel.app"
-];
+);
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
-// app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use("/api/auth", rateLimit({ windowMs: 15 * 60 * 1000, limit: 30 }), authRoutes);
