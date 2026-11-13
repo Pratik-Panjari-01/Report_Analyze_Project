@@ -7,13 +7,20 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function refreshUser() {
-    try {
-      const { data } = await api.get("/api/auth/me");
-      setUser(data.user);
-    } catch { setUser(null); }
-    finally { setLoading(false); }
+async function refreshUser() {
+  try {
+    const { data } = await api.get("/api/auth/me");
+    setUser(data.user);
+  } catch (error) {
+    if (error.response?.status === 401) {
+      setUser(null);
+    } else {
+      console.error("Authentication error:", error);
+    }
+  } finally {
+    setLoading(false);
   }
+}
   useEffect(() => { refreshUser(); }, []);
 
   async function signOut() {
