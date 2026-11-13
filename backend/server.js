@@ -66,14 +66,17 @@ app.use(helmet({
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 // 3. API routes
-app.use(
-  "/api/auth",
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 30
-  }),
-  authRoutes
-);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: process.env.NODE_ENV === "production" ? 100 : 500,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    message: "Too many authentication requests. Please try again later."
+  }
+});
+
+app.use("/api/auth", authLimiter, authRoutes);
 
 app.use(
   "/api/reports",
