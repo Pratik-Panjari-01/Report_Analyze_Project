@@ -49,19 +49,22 @@ const corsOptions = {
 };
 
 // 2. Middleware
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://reportanalyzefrontend.vercel.app"
+  ],
+  credentials: true
+}));
 
-app.use(
-  helmet({
-    crossOriginOpenerPolicy: {
-      policy: "same-origin-allow-popups"
-    }
-  })
-);
+app.use(helmet({
+  crossOriginOpenerPolicy: {
+    policy: "same-origin-allow-popups"
+  }
+}));
 
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
-
 // 3. API routes
 app.use(
   "/api/auth",

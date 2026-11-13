@@ -14,7 +14,6 @@ const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/"
 };
-
 export async function googleLogin(req, res) {
   try {
     const { credential } = req.body ?? {};
@@ -99,7 +98,6 @@ export async function getMe(req, res) {
     }
   });
 }
-
 export function logout(req, res) {
   res.clearCookie("session", {
     httpOnly: true,
@@ -108,5 +106,5 @@ export function logout(req, res) {
     path: "/"
   });
 
-  return res.json({ message: "Signed out" });
+  res.json({ message: "Signed out" });
 }
